@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  # ----------------------------------------------------------------- postgres backend
+  argos:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: argos
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  # ----------------------------------------------------------------- postgres db
+  postgres:
+    image: 'postgres:13.1-alpine'
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-dataset:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=compose-postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - "5050:5050"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@test.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=compose-postgres
+      - PGADMIN_LISTEN_PORT=5050
+
+
+volumes:
+  pg-dataset:
