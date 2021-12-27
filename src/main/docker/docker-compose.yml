@@ -2,18 +2,6 @@ version: '2'
 
 services:
   # ----------------------------------------------------------------- backend
-  argos:
-    image: 'docker-spring-boot-mongodb:latest'
-    build:
-      context: .
-    container_name: argos
-    depends_on:
-      - postgres
-    environment:
-      - SPRING.DATA.MONGODB.USERNAME=admin
-      - spring.data.mongodb.password=admin
-      - spring.data.mongodb.authentication-database=admin
-      - spring.data.mongodb.database=admin
 
   # ----------------------------------------------------------------- frontend
 
@@ -30,6 +18,7 @@ services:
     ports:
       - 27017:27017
 
+  # ----------------------------------------------------------------- db utility
   mongo-express:
     image: mongo-express
     restart: always
