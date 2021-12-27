@@ -1,46 +1,47 @@
 version: '2'
 
 services:
-  # ----------------------------------------------------------------- postgres backend
+  # ----------------------------------------------------------------- backend
   argos:
-    image: 'docker-spring-boot-postgres:latest'
+    image: 'docker-spring-boot-mongodb:latest'
     build:
       context: .
     container_name: argos
     depends_on:
       - postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=compose-postgres
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING.DATA.MONGODB.USERNAME=admin
+      - spring.data.mongodb.password=admin
+      - spring.data.mongodb.authentication-database=admin
+      - spring.data.mongodb.database=admin
 
-  # ----------------------------------------------------------------- postgres db
-  postgres:
-    image: 'postgres:13.1-alpine'
-    container_name: postgres
-    ports:
-      - "5432:5432"
+  # ----------------------------------------------------------------- frontend
+
+  # ----------------------------------------------------------------- db
+
+  argos-db:
+    container_name: argos-db
+    image: mongo:4.4.8
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
     volumes:
-      - pg-dataset:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=admin
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=compose-postgres
-
-  pgadmin:
-    image: dpage/pgadmin4
-    depends_on:
-      - postgres
+      - db:/data/db
     ports:
-      - "5050:5050"
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@test.com
-      - PGADMIN_DEFAULT_PASSWORD=root
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=compose-postgres
-      - PGADMIN_LISTEN_PORT=5050
+      - 27017:27017
 
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_SERVER: argos-db
+      ME_CONFIG_OPTIONS_EDITORTHEME: material
+    depends_on:
+      - argos-db
 
 volumes:
-  pg-dataset:
+  db:
