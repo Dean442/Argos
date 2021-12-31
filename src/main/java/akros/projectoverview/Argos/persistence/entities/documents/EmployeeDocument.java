@@ -21,9 +21,13 @@ public class EmployeeDocument {
 
     private String name;
 
-    private String lastName;
+    private String firstName;
 
     private String profile;
+
+    private String businessfield;
+
+    private String teamLeader;
 
     private List<String> mandates;
 

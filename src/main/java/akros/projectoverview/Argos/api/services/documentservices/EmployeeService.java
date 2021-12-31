@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,5 +33,19 @@ public class EmployeeService {
 
     public void deleteEmployee(String id) {
         employeeRepository.deleteById(id);
+    }
+
+    public List<EmployeeDocument> findBenchedEmployees() {
+        List<EmployeeDocument> benchedEmployees = new ArrayList<>();
+        final var allEmployees = employeeRepository.findAll();
+        if (allEmployees.isEmpty()) {
+            return null;
+        }
+        allEmployees.forEach(employee -> {
+            if (employee.getMandates().isEmpty()){
+                benchedEmployees.add(employee);
+            }
+        });
+        return benchedEmployees;
     }
 }

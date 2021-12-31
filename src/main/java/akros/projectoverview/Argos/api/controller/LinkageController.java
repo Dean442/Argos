@@ -72,7 +72,11 @@ public class LinkageController {
         var project = projectOptional.get();
         project.getMandates().add(mandateId);
 
+        var mandate = mandateOptional.get();
+        mandate.setProjectId(projectId);
+
         serviceLocator.saveNewProject(project);
+        serviceLocator.saveNewMandate(mandate);
 
         return new ResponseEntity<>(project, HttpStatus.OK);
 
@@ -88,7 +92,11 @@ public class LinkageController {
         var project = projectOptional.get();
         project.getMandates().remove(mandateId);
 
+        var mandate = mandateOptional.get();
+        mandate.setProjectId(null);
+
         serviceLocator.saveNewProject(project);
+        serviceLocator.saveNewMandate(mandate);
 
         return new ResponseEntity<>(project, HttpStatus.OK);
 
@@ -130,6 +138,8 @@ public class LinkageController {
 
         serviceLocator.saveNewProject(project);
         serviceLocator.saveNewCustomer(customer);
+
+        log.info("unlinked project: " + projectId + "\n from: " + customerId);
 
         return new ResponseEntity<>(HttpStatus.OK);
 

@@ -96,4 +96,8 @@ public class ServiceLocator {
     public void deleteEmployee(String id) {
         employeeService.deleteEmployee(id);
     }
+
+    public List<EmployeeDocument> findBenchedEmployees() {
+        return employeeService.findBenchedEmployees();
+    }
 }

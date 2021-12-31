@@ -18,6 +18,8 @@ public class MandateDocument {
     @Id
     private String id;
 
+    private String projectId;
+
     private String employee;
 
     private Date startDate;

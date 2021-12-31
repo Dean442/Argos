@@ -1,7 +1,6 @@
 package akros.projectoverview.Argos.api.controller;
 
 import akros.projectoverview.Argos.api.services.ServiceLocator;
-import akros.projectoverview.Argos.persistence.entities.documents.CustomerDocument;
 import akros.projectoverview.Argos.persistence.entities.documents.EmployeeDocument;
 import akros.projectoverview.Argos.persistence.entities.documents.IdList;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +36,15 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeDocument>> getAllEmployees() {
         final var allEmployees = serviceLocator.findAllEmployees();
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/bench")
+    public ResponseEntity<List<EmployeeDocument>> getBenchedEmployees() {
+        final var benchedEmployees = serviceLocator.findBenchedEmployees();
+        if (benchedEmployees.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(benchedEmployees, HttpStatus.OK);
     }
 
     @PostMapping(path = "/employeesByIds")
@@ -80,15 +88,16 @@ public class EmployeeController {
     }
 
     private EmployeeDocument mergeEmployee(EmployeeDocument employee, EmployeeDocument oldEmployee) {
-        final var newEmployee = EmployeeDocument.builder()
+        return EmployeeDocument.builder()
                 .id(employee.getId() != null ? employee.getId() : oldEmployee.getId())
                 .name(employee.getName() != null ? employee.getName() : oldEmployee.getName())
-                .lastName(employee.getLastName() != null ? employee.getLastName() : oldEmployee.getLastName())
+                .firstName(employee.getFirstName() != null ? employee.getFirstName() : oldEmployee.getFirstName())
                 .profile(employee.getProfile() != null ? employee.getProfile() : oldEmployee.getProfile())
+                .businessfield(employee.getBusinessfield() != null ? employee.getBusinessfield() : oldEmployee.getBusinessfield())
+                .teamLeader(employee.getTeamLeader() != null ? employee.getTeamLeader() : oldEmployee.getTeamLeader())
                 .mandates(employee.getMandates() != null ? employee.getMandates() : oldEmployee.getMandates())
                 .happiness(employee.getHappiness() != 0 ? employee.getHappiness() : oldEmployee.getHappiness())
                 .health(employee.getHealth() != null ? employee.getHealth() : oldEmployee.getHealth())
                 .build();
-        return newEmployee;
     }
 }

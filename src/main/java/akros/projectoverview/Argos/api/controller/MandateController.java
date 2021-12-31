@@ -83,14 +83,14 @@ public class MandateController {
 
 
     private MandateDocument mergeMandates(MandateDocument mandate, MandateDocument oldMandate) {
-        final var newMandate = MandateDocument.builder()
+        return MandateDocument.builder()
                 .id(mandate.getId() != null ? mandate.getId() : oldMandate.getId())
                 .employee(mandate.getEmployee() != null ? mandate.getEmployee() : oldMandate.getEmployee())
+                .projectId(mandate.getProjectId() != null ? mandate.getProjectId() : oldMandate.getProjectId())
                 .startDate(mandate.getStartDate() != null ? mandate.getStartDate() : oldMandate.getStartDate())
                 .endDate(mandate.getEndDate() != null ? mandate.getEndDate() : oldMandate.getEndDate())
                 .description(mandate.getDescription() != null ? mandate.getDescription() : oldMandate.getDescription())
                 .happiness(mandate.getHappiness() != 0 ? mandate.getHappiness() : oldMandate.getHappiness())
                 .build();
-        return newMandate;
     }
 }
