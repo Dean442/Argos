@@ -1,0 +1,13 @@
+<div class="rounded-md bg-gray-300 p-0.25 ">
+  <div class="mx-2">
+    <h2 >{{employee.name}} {{employee.firstName}}  </h2>
+    <button mat-raised-button (click)="deleteEmployee()" style="float: right">delete</button>
+    <button mat-raised-button style="float: right">edit</button>
+  </div>
+  <div class="mx-2">
+    <p >Profile: {{employee.profile}}</p>
+    <p>{{employee.businessfield}}</p>
+    <p>Team: {{employee.teamLeader}}</p>
+  </div>
+
+</div>

@@ -21,7 +21,7 @@ import java.util.List;
 public class EmployeeController {
 
     private final ServiceLocator serviceLocator;
-
+    @CrossOrigin()
     @GetMapping(path = "/{id}")
     public ResponseEntity<EmployeeDocument> getEmployee(@PathVariable String id) {
         var temp = serviceLocator.findEmployeeById(id);
@@ -31,22 +31,25 @@ public class EmployeeController {
         final var employee = temp.get();
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
-
+    @CrossOrigin()
     @GetMapping(path = "/allEmployees")
     public ResponseEntity<List<EmployeeDocument>> getAllEmployees() {
         final var allEmployees = serviceLocator.findAllEmployees();
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @GetMapping(path = "/bench")
     public ResponseEntity<List<EmployeeDocument>> getBenchedEmployees() {
         final var benchedEmployees = serviceLocator.findBenchedEmployees();
         if (benchedEmployees.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+        log.info("releaseing benchedEmployees");
+        log.info(benchedEmployees.toString());
         return new ResponseEntity<>(benchedEmployees, HttpStatus.OK);
     }
-
+    @CrossOrigin()
     @PostMapping(path = "/employeesByIds")
     public ResponseEntity<List<EmployeeDocument>> getEmployeesByIds(@RequestBody IdList employeeIds) {
         List<EmployeeDocument> collection = new ArrayList<>();
@@ -56,15 +59,16 @@ public class EmployeeController {
         });
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }
-
+    @CrossOrigin()
     @PostMapping(path = "/newEmployee")
     public ResponseEntity<EmployeeDocument> addNewEmployee(
             @RequestBody EmployeeDocument employee) {
+        log.info("adding new employee: " + employee.toString());
         employee.setId(null);
         final var newEmployee = serviceLocator.saveNewEmployee(employee);
         return new ResponseEntity<>(newEmployee, HttpStatus.ACCEPTED);
     }
-
+    @CrossOrigin()
     @PutMapping(path = "/{id}")
     public ResponseEntity<EmployeeDocument> updateEmployee(
             @PathVariable String id,
@@ -79,9 +83,10 @@ public class EmployeeController {
         final var updatedEmployee = serviceLocator.saveNewEmployee(newEmployee);
         return new ResponseEntity<>(updatedEmployee, HttpStatus.ACCEPTED);
     }
-
+    @CrossOrigin()
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<EmployeeDocument> deleteEmployee(@PathVariable String id) {
+        log.info("deleting: " + id);
         final var deltetedEmployee = serviceLocator.findEmployeeById(id).get();
         serviceLocator.deleteEmployee(id);
         return new ResponseEntity<>(deltetedEmployee, HttpStatus.OK);
