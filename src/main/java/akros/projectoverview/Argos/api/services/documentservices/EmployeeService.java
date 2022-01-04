@@ -39,7 +39,7 @@ public class EmployeeService {
         List<EmployeeDocument> benchedEmployees = new ArrayList<>();
         final var allEmployees = employeeRepository.findAll();
         if (allEmployees.isEmpty()) {
-            return null;
+            return benchedEmployees;
         }
         allEmployees.forEach(employee -> {
             if (employee.getMandates().isEmpty()){

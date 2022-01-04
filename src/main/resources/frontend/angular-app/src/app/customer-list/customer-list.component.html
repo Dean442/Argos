@@ -1,0 +1,27 @@
+<div class="border-2 bg-grey-100 border">
+  <ng-container>
+    <h1> Customers: </h1>
+    <div *ngFor="let customer of customers">
+      <app-customer (updateList)="refresh()" *ngIf="customerAvailable" [customer]="customer"></app-customer>
+    </div>
+  </ng-container>
+
+  <div *ngIf="customerFormToggle">
+    <ng-container>
+      <mat-form-field >
+        <mat-label>Name </mat-label>
+        <textarea type="text" [formControl]="custName" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5">
+      </textarea>
+      </mat-form-field>
+      <button class="mat-button" (click)="createNewCustomer()">save</button>
+    </ng-container>
+  </div>
+
+  <div>
+    <button class="mat-button" (click)="toggleCustomerForm()">Create new Customer</button>
+  </div>
+</div>

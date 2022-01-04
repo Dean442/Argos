@@ -1,1 +1,16 @@
-<p>project works!</p>
+<div class="rounded-md bg-gray-500 p-0.25 border">
+  <div class="float-right">
+    <button class="mat-button button-raised" (click)="deleteProject()">delete</button>
+  </div>
+  <div class="mx-2">
+    <h1>Project name: {{project.name}}</h1>
+    <p>Start date: {{project.startDate}}</p>
+    <p>End date: {{project.endDate}}</p>
+    <ng-container>
+      <div *ngFor="let mandate of mandates">
+        <app-mandate *ngIf="mandatesAvailable" [mandate]="mandate"></app-mandate>
+      </div>
+    </ng-container>
+
+  </div>
+</div>

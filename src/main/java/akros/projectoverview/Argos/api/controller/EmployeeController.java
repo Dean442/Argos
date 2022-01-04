@@ -43,7 +43,7 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeDocument>> getBenchedEmployees() {
         final var benchedEmployees = serviceLocator.findBenchedEmployees();
         if (benchedEmployees.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(benchedEmployees, HttpStatus.OK);
         }
         log.info("releaseing benchedEmployees");
         log.info(benchedEmployees.toString());
@@ -73,6 +73,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDocument> updateEmployee(
             @PathVariable String id,
             @RequestBody EmployeeDocument employee) {
+        log.info(employee.toString());
         var temp = serviceLocator.findEmployeeById(id);
         if(temp.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

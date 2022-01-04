@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @Slf4j
 @RestController
@@ -21,6 +20,7 @@ public class LinkageController {
 
     private final ServiceLocator serviceLocator;
 
+    @CrossOrigin()
     @PutMapping(path = "/employeeToMandate/{employeeId}/{mandateId}")
     public ResponseEntity linkEmployeeToMandate(@PathVariable String employeeId, @PathVariable String mandateId) {
         var employeeOptional = serviceLocator.findEmployeeById(employeeId);
@@ -29,8 +29,13 @@ public class LinkageController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         var employee = employeeOptional.get();
-        employee.getMandates().add(mandateId);
-
+        if (employee.getMandates() == null) {
+            var mandates = new ArrayList<String>();
+            mandates.add(mandateId);
+            employee.setMandates(mandates);
+        } else {
+            employee.getMandates().add(mandateId);
+        }
         var mandate = mandateOptional.get();
         mandate.setEmployee(employeeId);
 
@@ -41,6 +46,7 @@ public class LinkageController {
 
     }
 
+    @CrossOrigin()
     @PutMapping(path = "/employeeFromMandate/{employeeId}/{mandateId}")
     public ResponseEntity unlinkEmployeeToMandate(@PathVariable String employeeId, @PathVariable String mandateId) {
         var employeeOptional = serviceLocator.findEmployeeById(employeeId);
@@ -61,6 +67,7 @@ public class LinkageController {
 
     }
 
+    @CrossOrigin()
     @PutMapping(path = "/mandateToProject/{mandateId}/{projectId}")
     public ResponseEntity<ProjectDocument> linkMandateToProject(@PathVariable String mandateId, @PathVariable String projectId) {
         var mandateOptional = serviceLocator.findMandateById(mandateId);
@@ -70,7 +77,14 @@ public class LinkageController {
         }
 
         var project = projectOptional.get();
-        project.getMandates().add(mandateId);
+
+        if (project.getMandates() == null) {
+            var mandates = new ArrayList<String>();
+            mandates.add(mandateId);
+            project.setMandates(mandates);
+        } else {
+            project.getMandates().add(mandateId);
+        }
 
         var mandate = mandateOptional.get();
         mandate.setProjectId(projectId);
@@ -81,6 +95,8 @@ public class LinkageController {
         return new ResponseEntity<>(project, HttpStatus.OK);
 
     }
+
+    @CrossOrigin()
     @PutMapping(path = "/mandateFromProject/{mandateId}/{projectId}")
     public ResponseEntity<ProjectDocument> unlinkMandateToProject(@PathVariable String mandateId, @PathVariable String projectId) {
         var mandateOptional = serviceLocator.findMandateById(mandateId);
@@ -102,6 +118,7 @@ public class LinkageController {
 
     }
 
+    @CrossOrigin()
     @PutMapping(path = "/projectToCustomer/{projectId}/{customerId}")
     public ResponseEntity linkProjectToCustomer(@PathVariable String projectId, @PathVariable String customerId) {
         var customerOptional = serviceLocator.findCustomerById(customerId);
@@ -114,7 +131,13 @@ public class LinkageController {
         project.setCustomer(customerId);
 
         var customer = customerOptional.get();
-        customer.getProjects().add(projectId);
+        if( customer.getProjects() == null ) {
+            var projects = new ArrayList<String>();
+            projects.add(projectId);
+            customer.setProjects(projects);
+        } else {
+            customer.getProjects().add(projectId);
+        }
 
         serviceLocator.saveNewProject(project);
         serviceLocator.saveNewCustomer(customer);
@@ -122,6 +145,8 @@ public class LinkageController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
+    @CrossOrigin()
     @PutMapping(path = "/projectFromCustomer/{projectId}/{customerId}")
     public ResponseEntity unlinkProjectToCustomer(@PathVariable String projectId, @PathVariable String customerId) {
         var customerOptional = serviceLocator.findCustomerById(customerId);

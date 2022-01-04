@@ -22,6 +22,7 @@ public class MandateController {
 
     private final ServiceLocator serviceLocator;
 
+    @CrossOrigin()
     @GetMapping(path = "/{id}")
     public ResponseEntity<MandateDocument> getMandate(@PathVariable String id) {
 
@@ -34,22 +35,28 @@ public class MandateController {
         return new ResponseEntity<>(mandate, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @GetMapping(path = "/allMandates")
     public ResponseEntity<List<MandateDocument>> getAllMandates() {
         final var allMandates = serviceLocator.findAllMandates();
         return new ResponseEntity<>(allMandates, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @PostMapping(path = "/mandatesByIds")
-    public ResponseEntity<List<MandateDocument>> getCustomersByIds(@RequestBody IdList mandateIds) {
+    public ResponseEntity<List<MandateDocument>> getMandatesByIds(@RequestBody IdList mandateIds) {
+        log.info("mandateIds: " + mandateIds);
         List<MandateDocument> collection = new ArrayList<>();
         mandateIds.getIds().forEach(id -> {
+            log.info(id);
             final var optional = serviceLocator.findMandateById(id);
             optional.ifPresent(collection::add);
         });
+        log.info(collection.toString());
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @PostMapping(path = "/newMandate")
     public ResponseEntity<MandateDocument> addNewMandate(@RequestBody MandateDocument mandate) {
         mandate.setId(null);
@@ -57,6 +64,7 @@ public class MandateController {
         return new ResponseEntity<>(newMandate, HttpStatus.ACCEPTED);
     }
 
+    @CrossOrigin()
     @PutMapping(path = "/{id}")
     public ResponseEntity<MandateDocument> updateMandate(
             @PathVariable String id,
@@ -72,6 +80,7 @@ public class MandateController {
         return new ResponseEntity<>(updatedMandate, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<MandateDocument> deleteMandate(
             @PathVariable String id) {

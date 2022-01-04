@@ -1,7 +1,6 @@
 package akros.projectoverview.Argos.api.controller;
 
 import akros.projectoverview.Argos.api.services.ServiceLocator;
-import akros.projectoverview.Argos.persistence.entities.documents.EmployeeDocument;
 import akros.projectoverview.Argos.persistence.entities.documents.IdList;
 import akros.projectoverview.Argos.persistence.entities.documents.ProjectDocument;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +22,7 @@ public class ProjectController {
 
     private final ServiceLocator serviceLocator;
 
+    @CrossOrigin()
     @GetMapping(path = "/{id}")
     public ResponseEntity<ProjectDocument> getProject(String id) {
         final var temp = serviceLocator.findProjectById(id);
@@ -34,22 +34,28 @@ public class ProjectController {
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @GetMapping(path = "/allProjects")
     public ResponseEntity<List<ProjectDocument>> getAllProjects() {
         final var allProjects = serviceLocator.findAllProjects();
         return new ResponseEntity<>(allProjects, HttpStatus.ACCEPTED);
     }
 
+    @CrossOrigin()
     @PostMapping(path = "/projectsByIds")
-    public ResponseEntity<List<ProjectDocument>> getEmployeesByIds(@RequestBody IdList projectIds) {
+    public ResponseEntity<List<ProjectDocument>> getProjectsByIds(@RequestBody IdList projectIds) {
+        log.info("projectIds: " + projectIds.toString());
         List<ProjectDocument> collection = new ArrayList<>();
         projectIds.getIds().forEach(id -> {
+            log.info(id);
             final var optional = serviceLocator.findProjectById(id);
             optional.ifPresent(collection::add);
         });
+        log.info(collection.toString());
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @PostMapping(path = "/newProject")
     public ResponseEntity<ProjectDocument> addNewProject(
             @RequestBody ProjectDocument project) {
@@ -58,6 +64,7 @@ public class ProjectController {
         return new ResponseEntity<>(newProject, HttpStatus.ACCEPTED);
     }
 
+    @CrossOrigin()
     @PutMapping(path = "/{id}")
     public ResponseEntity<ProjectDocument> updateProject(
             @PathVariable String id,
@@ -76,6 +83,7 @@ public class ProjectController {
         return new ResponseEntity<>(updatedProject, HttpStatus.ACCEPTED);
     }
 
+    @CrossOrigin()
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<ProjectDocument> deleteProject( @PathVariable String id) {
         final var deletedProject = serviceLocator.findProjectById(id).get();

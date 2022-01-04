@@ -18,6 +18,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
+import { CustomerListComponent } from './customer-list/customer-list.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -26,7 +29,8 @@ import {MatListModule} from "@angular/material/list";
     EmployeeComponent,
     CustomerComponent,
     ProjectComponent,
-    MandateComponent
+    MandateComponent,
+    CustomerListComponent
   ],
     imports: [
         BrowserModule,
@@ -42,6 +46,8 @@ import {MatListModule} from "@angular/material/list";
         MatButtonModule,
         ReactiveFormsModule,
         MatListModule,
+        MatDatepickerModule,
+        MatNativeDateModule
     ],
   providers: [],
   bootstrap: [AppComponent]

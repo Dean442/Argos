@@ -13,8 +13,11 @@ export class EmployeesService {
   }
 
   getEmployeeById(id: string): Observable<Employee> {
-    id = id.trim();
-    return this.http.get<Employee>(this.baseUrl + id)
+    const employee =  this.http.get<Employee>(this.baseUrl + id);
+    employee.subscribe(employee => {
+      console.log(employee)
+    });
+    return employee;
   }
 
   getBench(): Observable<Employee[]> {
@@ -28,12 +31,14 @@ export class EmployeesService {
   }
 
   updateEmployee(employee: Employee): Observable<Employee> {
-    employee.id.trim();
-    return this.http.put<Employee>(this.baseUrl + employee.id, employee);
+    const updated = this.http.put<Employee>(this.baseUrl + employee.id, employee);
+    updated.subscribe(employee => {
+      console.log('updating : '+ employee)
+    });
+    return updated;
   }
 
   deleteEmployee(id: string): Observable<Employee> {
-    id.trim();
     console.log(id)
     const toreturn = this.http.delete<Employee>(this.baseUrl + id);
     toreturn.subscribe(data => {

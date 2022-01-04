@@ -22,6 +22,7 @@ public class CustomerController {
 
     private final ServiceLocator serviceLocator;
 
+    @CrossOrigin()
     @GetMapping(path = "/{id}")
     public ResponseEntity<CustomerDocument> getCustomer(
             @PathVariable String id) {
@@ -35,13 +36,14 @@ public class CustomerController {
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @GetMapping(path = "/allCustomers")
     public ResponseEntity<List<CustomerDocument>> getAllCustomers() {
         final var allCustomers = serviceLocator.findAllCustomers();
-
         return new ResponseEntity<>(allCustomers, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @PostMapping(path = "/customersByIds")
     public ResponseEntity<List<CustomerDocument>> getCustomersByIds(@RequestBody IdList customerIds) {
         List<CustomerDocument> collection = new ArrayList<>();
@@ -52,6 +54,7 @@ public class CustomerController {
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }
 
+    @CrossOrigin()
     @PostMapping(path = "/newCustomer")
     public ResponseEntity<CustomerDocument> addNewCustomer(
             @RequestBody CustomerDocument customer) {
@@ -60,6 +63,7 @@ public class CustomerController {
         return new ResponseEntity<>(newCustomer, HttpStatus.ACCEPTED);
     }
 
+    @CrossOrigin()
     @PutMapping(path = "/{id}")
     public ResponseEntity<CustomerDocument> updateCustomer(
             @PathVariable String id,
@@ -77,6 +81,7 @@ public class CustomerController {
         return new ResponseEntity<>(updatedCustomer, HttpStatus.ACCEPTED);
     }
 
+    @CrossOrigin()
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<CustomerDocument> deleteCustomer(
             @PathVariable String id) {

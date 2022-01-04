@@ -1,13 +1,81 @@
 <div class="rounded-md bg-gray-300 p-0.25 ">
-  <div class="mx-2">
-    <h2 >{{employee.name}} {{employee.firstName}}  </h2>
-    <button mat-raised-button (click)="deleteEmployee()" style="float: right">delete</button>
-    <button mat-raised-button style="float: right">edit</button>
+  <div *ngIf="!editmode">
+    <div class="mx-2" >
+      <h2 >{{employee.name}} {{employee.firstName}}  </h2>
+      <button mat-raised-button (click)="deleteEmployee()" style="float: right">delete</button>
+      <button mat-raised-button style="float: right" (click)="toggleEdit()">edit</button>
+    </div>
+    <div class="mx-2">
+      <p >Profile: {{employee.profile}}</p>
+      <p>{{employee.businessfield}}</p>
+      <p>Team: {{employee.teamLeader}}</p>
+    </div>
   </div>
-  <div class="mx-2">
-    <p >Profile: {{employee.profile}}</p>
-    <p>{{employee.businessfield}}</p>
-    <p>Team: {{employee.teamLeader}}</p>
+
+  <div class="mx-2" *ngIf="editmode">
+    <ng-container>
+      <mat-form-field >
+        <mat-label>Name </mat-label>
+        <textarea type="text" [formControl]="name" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5">
+      </textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Firstname </mat-label>
+        <textarea type="text" [formControl]="firstName" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Profile </mat-label>
+        <textarea type="text" [formControl]="profile" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Businessfield </mat-label>
+        <textarea type="text" [formControl]="businessfield" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Teamleader </mat-label>
+        <textarea type="text" [formControl]="teamleader" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Happiness </mat-label>
+        <input type="number" [formControl]="happiness" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Health </mat-label>
+        <textarea type="number" [formControl]="health" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+      <button mat-raised-button style="float: right" (click)="saveEdit()">save</button>
+      <button mat-raised-button style="float: right" (click)="toggleEdit()">cancel</button>
+    </ng-container>
   </div>
 
 </div>

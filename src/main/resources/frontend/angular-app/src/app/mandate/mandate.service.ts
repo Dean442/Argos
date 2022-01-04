@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
 import {Mandate} from "./mandate";
+import {idList} from "../../assets/idList";
+
 
 @Injectable()
 export class MandateService {
@@ -12,8 +14,14 @@ export class MandateService {
   }
 
   getMandateById(id: string): Observable<Mandate> {
-    id = id.trim();
     return this.http.get<Mandate>(this.baseUrl + id)
+  }
+
+  getMandatesByIds(ids: String[]): Observable<Mandate[]> {
+    let list: idList;
+    const obj = {"ids": ids};
+    list = <idList>obj;
+    return this.http.post<Mandate[]>(this.baseUrl + 'mandatesByIds', list);
   }
 
   getAllMandates(): Observable<Mandate[]> {
@@ -21,7 +29,6 @@ export class MandateService {
   }
 
   updateMandate(mandate: Mandate): Observable<Mandate> {
-    mandate.id.trim();
     return this.http.put<Mandate>(this.baseUrl + mandate.id, mandate);
   }
 

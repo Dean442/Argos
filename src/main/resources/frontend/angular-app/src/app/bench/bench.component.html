@@ -2,73 +2,79 @@
   <ng-container>
     <div [style.height]="'500px'" style="overflow-y: scroll; overflow-x: hidden">
       <div *ngFor="let employee of employees">
-        <app-employee (deleteEmployeeEvent)="deleteEmployee($event)" [employee]="employee"></app-employee>
+        <app-employee (deleteEmployeeEvent)="deleteEmployee($event)" (updateEmployeeEvent)="updateEmployee($event)" [employee]="employee"></app-employee>
       </div>
     </div>
   </ng-container>
 
-  <ng-container>
-    <mat-form-field >
-      <mat-label>Name </mat-label>
-      <textarea type="text" [formControl]="name" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5">
+  <div *ngIf="newEmployeeFormToggle">
+    <ng-container>
+      <mat-form-field >
+        <mat-label>Name </mat-label>
+        <textarea type="text" [formControl]="name" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5">
       </textarea>
-    </mat-form-field>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Firstname </mat-label>
-      <textarea type="text" [formControl]="firstName" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"></textarea>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Firstname </mat-label>
+        <textarea type="text" [formControl]="firstName" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Profile </mat-label>
-      <textarea type="text" [formControl]="profile" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"></textarea>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Profile </mat-label>
+        <textarea type="text" [formControl]="profile" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Businessfield </mat-label>
-      <textarea type="text" [formControl]="businessfield" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"></textarea>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Businessfield </mat-label>
+        <textarea type="text" [formControl]="businessfield" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Teamleader </mat-label>
-      <textarea type="text" [formControl]="teamleader" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"></textarea>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Teamleader </mat-label>
+        <textarea type="text" [formControl]="teamleader" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Happiness </mat-label>
-      <input type="number" [formControl]="happiness" matInput>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Happiness </mat-label>
+        <input type="number" [formControl]="happiness" matInput>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Health </mat-label>
-      <textarea type="number" [formControl]="health" matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"></textarea>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Health </mat-label>
+        <textarea type="number" [formControl]="health" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
 
-    <button mat-raised-button class="mat-accent" (click)="addNewEmployee()">AddNewEmployee</button>
-  </ng-container>
+      <button mat-raised-button class="mat-accent" (click)="addNewEmployee()">AddNewEmployee</button>
+      <button mat-raised-button class="mat-accent" (click)="toggleNewEmployeeForm()">Cancel</button>
+    </ng-container>
+  </div>
+  <div *ngIf="!newEmployeeFormToggle">
+    <button mat-raised-button class="mat-accent" (click)="toggleNewEmployeeForm()">AddNewEmployee</button>
+  </div>
 
 </div>

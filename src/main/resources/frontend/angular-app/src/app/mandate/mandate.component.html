@@ -1,1 +1,13 @@
-<p>mandate works!</p>
+<div class="rounded-md bg-gray-400 p-0.25 border">
+  <div class="mx-2">
+    <h1> {{mandate.description.description}}</h1>
+    <p>Start: {{mandate.startDate}}</p>
+    <p>End: {{mandate.endDate}}</p>
+    <div *ngIf="employeeAvialable">
+      <app-employee [employee]="employee"></app-employee>
+    </div>
+    <div *ngIf="!employeeAvialable">
+
+    </div>
+  </div>
+</div>

@@ -15,6 +15,4 @@ import java.util.List;
 public class IdList {
 
     private List<String> ids;
-
-    private String caller;
 }
