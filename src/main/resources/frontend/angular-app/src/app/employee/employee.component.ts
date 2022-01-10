@@ -24,6 +24,7 @@ export class EmployeeComponent implements OnInit {
 
   @Output() deleteEmployeeEvent: EventEmitter<string> = new EventEmitter<string>();
   @Output() updateEmployeeEvent: EventEmitter<Employee> = new EventEmitter<Employee>();
+  @Output() refreshEvent: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnInit(): void {
     console.log(this.employee)
@@ -69,6 +70,7 @@ export class EmployeeComponent implements OnInit {
     const updatedEmployee: Employee = {id,  name, firstName, profile, businessfield, teamLeader, mandates, happiness, health}
 
     this.updateEmployeeEvent.emit(updatedEmployee);
+    this.refreshEvent.emit("");
     this.editmode = false;
   }
 

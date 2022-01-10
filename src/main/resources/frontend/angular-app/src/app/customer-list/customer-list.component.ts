@@ -19,10 +19,15 @@ export class CustomerListComponent implements OnInit {
   constructor(private customerService: CustomerService) { }
 
   ngOnInit(): void {
+    this.customerService.refreshCustomers.subscribe(() => {
+      this.getCustomers();
+    });
     this.getCustomers();
     this.customers != null ? this.customerAvailable = true : this.customerAvailable = false;
-    console.log('this is the customer: '+ this.customers)
-    console.log(this.customerAvailable)
+  }
+
+  ngOnDestroy():void {
+    this.customerService.refreshCustomers.unsubscribe();
   }
 
   getCustomers(): void {
@@ -51,9 +56,6 @@ export class CustomerListComponent implements OnInit {
     const newCustomer: Customer = {id, name, projects};
 
     this.customerService.postCustomer(newCustomer);
-
-    for (let i = 0; i<4; i++)
-      this.ngOnInit();
 
     this.customerFormToggle = false;
   }

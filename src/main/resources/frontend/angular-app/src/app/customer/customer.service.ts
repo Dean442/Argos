@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, Subject, tap} from "rxjs";
 import {Customer} from "./customer";
 
 @Injectable()
@@ -9,6 +9,13 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {
   }
+
+  private _refreshCustomers$ = new Subject<void>()
+
+  get refreshCustomers() {
+    return this._refreshCustomers$;
+  }
+
 
   getCustomer(id: string): Observable<Customer> {
     const customer = this.http.get<Customer>(this.baseUrl + id);
@@ -25,7 +32,10 @@ export class CustomerService {
 
   postCustomer(customer: Customer): Observable<Customer> {
     console.log('posting customer' + customer)
-    const newCustomer = this.http.post<Customer>(this.baseUrl + 'newCustomer', customer);
+    const newCustomer = this.http.post<Customer>(this.baseUrl + 'newCustomer', customer).pipe(
+      tap(() => {
+        this._refreshCustomers$.next();
+      }));
     newCustomer.subscribe(customer => {
       console.log(customer);
     });
@@ -34,14 +44,24 @@ export class CustomerService {
 
   deleteCustomer(id: string): void {
     console.log('deleting customer: '+ id);
-    this.http.delete(this.baseUrl + id).subscribe(customer =>{
+    const deleted = this.http.delete(this.baseUrl + id).pipe(
+      tap(() => {
+        this._refreshCustomers$.next();
+      }));
+
+    deleted.subscribe(customer =>{
       console.log('deleted' + customer)
     });
   }
 
   updateCustomer(customer: Customer) {
     console.log('updating ' + customer.id)
-    this.http.put<Customer>(this.baseUrl + customer.id, customer).subscribe(customer =>{
+    const updated = this.http.put<Customer>(this.baseUrl + customer.id, customer).pipe(
+      tap(() => {
+        this._refreshCustomers$.next();
+      }));
+
+    updated.subscribe(customer =>{
       console.log('updated' + customer)
     });
   }

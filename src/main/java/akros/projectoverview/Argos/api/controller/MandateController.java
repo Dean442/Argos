@@ -60,6 +60,7 @@ public class MandateController {
     @PostMapping(path = "/newMandate")
     public ResponseEntity<MandateDocument> addNewMandate(@RequestBody MandateDocument mandate) {
         mandate.setId(null);
+        mandate.setEmployee(null);
         final var newMandate = serviceLocator.saveNewMandate(mandate);
         return new ResponseEntity<>(newMandate, HttpStatus.ACCEPTED);
     }

@@ -1,11 +1,13 @@
 <div class="border-2; bg-gray-100" >
-  <ng-container>
-    <div [style.height]="'500px'" style="overflow-y: scroll; overflow-x: hidden">
-      <div *ngFor="let employee of employees">
-        <app-employee (deleteEmployeeEvent)="deleteEmployee($event)" (updateEmployeeEvent)="updateEmployee($event)" [employee]="employee"></app-employee>
-      </div>
+  <div style="height: 75vh" class=" overflow-y-scroll" cdkDropList id="bench" [cdkDropListConnectedTo]="MandateLists" (cdkDropListDropped)="drop($event)" >
+    <div *ngFor="let employee of employees" cdkDrag>
+      <app-employee
+        [id]="employee.id"
+        (deleteEmployeeEvent)="deleteEmployee($event)"
+        (updateEmployeeEvent)="updateEmployee($event)"
+        [employee]="employee"></app-employee>
     </div>
-  </ng-container>
+  </div>
 
   <div *ngIf="newEmployeeFormToggle">
     <ng-container>

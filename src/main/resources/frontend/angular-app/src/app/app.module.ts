@@ -21,6 +21,7 @@ import {MatListModule} from "@angular/material/list";
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {MatNativeDateModule} from "@angular/material/core";
         ReactiveFormsModule,
         MatListModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        DragDropModule
     ],
   providers: [],
   bootstrap: [AppComponent]

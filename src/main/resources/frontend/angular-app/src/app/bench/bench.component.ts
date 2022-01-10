@@ -2,12 +2,16 @@ import {Component, OnInit} from '@angular/core';
 import {EmployeesService} from "../employee/employees.service";
 import {Employee} from "../employee/employee";
 import {FormControl} from "@angular/forms";
+import {CdkDragDrop} from "@angular/cdk/drag-drop";
+import {LinkageService} from "../../assets/linkage.service";
+import {tap} from "rxjs";
+import {MandateService} from "../mandate/mandate.service";
 
 @Component({
   selector: 'app-bench',
   templateUrl: './bench.component.html',
   styleUrls: ['./bench.component.scss'],
-  providers: [EmployeesService]
+  providers: [EmployeesService, LinkageService, MandateService]
 })
 export class BenchComponent implements OnInit {
   employees: Employee[] = [];
@@ -20,19 +24,27 @@ export class BenchComponent implements OnInit {
   health = new FormControl('');
 
   newEmployeeFormToggle: boolean = false;
+  MandateLists: string[] = [];
 
-  constructor(private employeeService: EmployeesService) {
+  constructor(private employeeService: EmployeesService, private linkageService: LinkageService, private mandateService: MandateService) {
 
   }
 
   ngOnInit(): void {
+    this.employeeService.refreshEmployees.subscribe(() => {
+      this.getBench();
+    });
     this.getBench();
+    this.mandateService.getAllMandates().subscribe(mandates => {
+      mandates.forEach(mandate => {
+        if (mandate.employee == null)
+          this.MandateLists.push('mandate'+mandate.id)
+      })
+    } )
   }
 
   getBench(): void {
-    let bench: Employee[] = [];
-    this.employeeService.getBench().subscribe(employees => {
-      bench = employees;
+    this.employeeService.getBench().subscribe(bench => {
       this.employees = [...bench];
     });
   }
@@ -76,26 +88,32 @@ export class BenchComponent implements OnInit {
     this.happiness.reset();
     this.health.reset('');
 
-    //update bench
-    for( let i = 0; i<2 ; i++)
-      this.ngOnInit();
-
     this.newEmployeeFormToggle = false;
   }
 
   updateEmployee(employee: Employee) {
-    console.log('update Employee event recieved');
     this.employeeService.updateEmployee(employee)
-    console.log('updated')
-    for (let i= 0 ; i <4 ; i++)
-      this.ngOnInit();
   }
 
   deleteEmployee(id: string): void {
-    console.log(id);
     this.employeeService.deleteEmployee(id);
-    console.log('deleted')
-    for( let i = 0; i<4 ; i++)
+  }
+
+  drop($event: CdkDragDrop<Employee>) {
+    console.log('bench')
+    const mandateId = $event.previousContainer.id;
+    // @ts-ignore
+    const employeeId = $event.item.element.nativeElement.id;
+
+    const unlink = this.linkageService.employeeFromMandate(employeeId, mandateId).pipe(
+      tap(() => {
+        this.ngOnInit();
+        this.linkageService.refresh.next();
+      }));
+    unlink.subscribe( value => {
       this.ngOnInit();
+
+    });
+
   }
 }

@@ -33,6 +33,12 @@ export class MandateService {
   }
 
   addNewMandate(mandate: Mandate): Observable<Mandate> {
-    return this.http.post<Mandate>(this.baseUrl, mandate);
+    return this.http.post<Mandate>(this.baseUrl + 'newMandate/', mandate);
+  }
+
+  deleteMandate(id: string) {
+    console.log(id)
+    return this.http.delete<Mandate>(this.baseUrl + id);
+
   }
 }

@@ -8,9 +8,49 @@
     <p>End date: {{project.endDate}}</p>
     <ng-container>
       <div *ngFor="let mandate of mandates">
-        <app-mandate *ngIf="mandatesAvailable" [mandate]="mandate"></app-mandate>
+        <app-mandate (refreshEvent)="ngOnInit()" *ngIf="mandatesAvailable" [mandate]="mandate"></app-mandate>
       </div>
     </ng-container>
-
   </div>
+  <div *ngIf="!newMandateToggle" class="relative m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
+    <button mat-raised-button class="top-1/4 left-1/2" (click)="newMandateToggle = true">add Mandate</button>
+  </div>
+  <div *ngIf="newMandateToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
+    <ng-container>
+      <mat-form-field >
+        <mat-label>Description </mat-label>
+        <textarea type="text" [formControl]="mandateDescription" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5">
+        </textarea>
+      </mat-form-field>
+      <mat-form-field >
+        <mat-label>Profile </mat-label>
+        <textarea type="text" [formControl]="mandateProfile" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5">
+        </textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Choose a start date</mat-label>
+        <input matInput [matDatepicker]="picker" [formControl]="startDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Choose an end date</mat-label>
+        <input matInput [matDatepicker]="picker1" [formControl]="endDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+      <button mat-button class="mat-button" (click)="addNewMandate()">save</button>
+      <button mat-button class="mat-button" (click)="newMandateToggle = false">cancel</button>
+    </ng-container>
+  </div>
+
+
 </div>

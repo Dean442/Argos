@@ -10,10 +10,10 @@
       </div>
     </ng-container>
   </div>
-  <div *ngIf="!newProjectToggle">
-    <button class="mat-button" (click)="toggleNewProjectForm()">add Project</button>
+  <div *ngIf="!newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
+    <button mat-raised-button class="top-1/4 left-1/2" (click)="toggleNewProjectForm()">add Project</button>
   </div>
-  <div *ngIf="newProjectToggle">
+  <div *ngIf="newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
     <ng-container>
       <mat-form-field >
         <mat-label>Name </mat-label>
@@ -36,7 +36,8 @@
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
       </mat-form-field>
-      <button class="mat-button" (click)="addNewProject()">save</button>
+      <button mat-button (click)="addNewProject()">save</button>
+      <button mat-button (click)="newProjectToggle = false">cancel</button>
     </ng-container>
   </div>
 </div>

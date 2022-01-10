@@ -1,7 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Mandate} from "./mandate";
 import {EmployeesService} from "../employee/employees.service";
 import {Employee} from "../employee/employee";
+import {MandateService} from "./mandate.service";
+import {CdkDragDrop} from "@angular/cdk/drag-drop";
+import {LinkageService} from "../../assets/linkage.service";
 
 @Component({
   selector: 'app-mandate',
@@ -16,12 +19,16 @@ export class MandateComponent implements OnInit {
 
   @Input() mandate!: Mandate;
 
-  constructor(private employeeService: EmployeesService) { }
+  @Output() refreshEvent: EventEmitter<string> = new EventEmitter<string>();
+
+  constructor(private employeeService: EmployeesService, private mandateService: MandateService, private linkageService: LinkageService) { }
 
   ngOnInit(): void {
-    this.getEmployee();
-    this.employee != null ?
-      this.employeeAvialable = true : this.employeeAvialable = false;
+    console.log("checking for employee"+ this.mandate.employee)
+    if(this.mandate.employee != null ) {
+      this.employeeAvialable = true;
+      this.getEmployee();
+    }
   }
 
   getEmployee(): void {
@@ -30,4 +37,27 @@ export class MandateComponent implements OnInit {
     });
   }
 
+  deleteMandate(): void {
+    this.mandateService.deleteMandate(this.mandate.id).subscribe( deleted => {
+      console.log(deleted)
+      this.refreshEvent.emit("");
+    });
+  }
+
+  drop($event: CdkDragDrop<string[]>) {
+    console.log('mandates:')
+    // @ts-ignore
+    const employeeId = $event.item.element.nativeElement.children.item(0).id;
+    this.linkageService.employeeToMandate(employeeId, this.mandate.id).subscribe( value => {
+      this.refreshEvent.emit("");
+      this.linkageService.refreshBench.next();
+    });
+
+  }
+
+  unlink() {
+    console.log('unlinking')
+    this.refreshEvent.emit("")
+    this.ngOnInit()
+  }
 }

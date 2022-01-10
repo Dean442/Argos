@@ -1,12 +1,16 @@
-<div class="border-2 bg-grey-100 border">
-  <ng-container>
+<div class=" border-4 bg-grey-100 border" >
+  <div class="overflow-y-scroll" style="height: 90vh">
     <h1> Customers: </h1>
     <div *ngFor="let customer of customers">
       <app-customer (updateList)="refresh()" *ngIf="customerAvailable" [customer]="customer"></app-customer>
     </div>
-  </ng-container>
+  </div>
 
-  <div *ngIf="customerFormToggle">
+  <div *ngIf="!customerFormToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2 border-black">
+    <button class="mat-button" (click)="toggleCustomerForm()">Create new Customer</button>
+  </div>
+
+  <div *ngIf="customerFormToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2 border-black">
     <ng-container>
       <mat-form-field >
         <mat-label>Name </mat-label>
@@ -18,10 +22,8 @@
       </textarea>
       </mat-form-field>
       <button class="mat-button" (click)="createNewCustomer()">save</button>
+
     </ng-container>
   </div>
 
-  <div>
-    <button class="mat-button" (click)="toggleCustomerForm()">Create new Customer</button>
-  </div>
 </div>
