@@ -1,18 +1,19 @@
-<div class="rounded-md bg-gray-700 p-0.25 border">
-  <div class="float-right">
-    <button class="mat-button button-raised" (click)="deleteCustomer()">delete</button>
-  </div>
-  <div class="mx-2">
-    <h1 class="h-5">{{customer.name}}</h1>
-    <ng-container>
+<div class="rounded-md  p-0.25 border">
+  <mat-expansion-panel hideToggle class="mx-2">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="h-5">{{customer.name}}</mat-panel-title>
+      <div class="float-right">
+        <button class="mat-button button-raised" (click)="deleteCustomer()">delete</button>
+      </div>
+    </mat-expansion-panel-header>
       <div *ngFor="let project of projects">
         <app-project *ngIf="projectAvailable" [project]="project" (deleteProjectEvent)="deleteProject($event)"></app-project>
       </div>
-    </ng-container>
-  </div>
-  <div *ngIf="!newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
-    <button mat-raised-button class="top-1/4 left-1/2" (click)="toggleNewProjectForm()">add Project</button>
-  </div>
+      <div *ngIf="!newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
+        <button mat-raised-button class="top-1/4 left-1/2" (click)="toggleNewProjectForm()">add Project</button>
+      </div>
+  </mat-expansion-panel>
+
   <div *ngIf="newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
     <ng-container>
       <mat-form-field >
