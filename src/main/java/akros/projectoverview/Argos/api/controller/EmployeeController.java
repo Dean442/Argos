@@ -87,7 +87,6 @@ public class EmployeeController {
     @CrossOrigin()
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<EmployeeDocument> deleteEmployee(@PathVariable String id) {
-        log.info("deleting: " + id);
         final var deltetedEmployee = serviceLocator.findEmployeeById(id).get();
         serviceLocator.deleteEmployee(id);
         return new ResponseEntity<>(deltetedEmployee, HttpStatus.OK);

@@ -13,7 +13,7 @@ import {LinkageService} from "../../assets/linkage.service";
   providers: [EmployeesService]
 })
 export class MandateComponent implements OnInit {
-  employee = {} as Employee;
+  employee: Employee = {} as Employee;
   employeeAvialable: boolean = false;
 
 
@@ -21,14 +21,37 @@ export class MandateComponent implements OnInit {
 
   @Output() refreshEvent: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private employeeService: EmployeesService, private mandateService: MandateService, private linkageService: LinkageService) { }
+  constructor(private employeeService: EmployeesService, private mandateService: MandateService, private linkageService: LinkageService) {
+
+  }
 
   ngOnInit(): void {
-    console.log("checking for employee"+ this.mandate.employee)
-    if(this.mandate.employee != null ) {
+    if(this.mandate.employee == null || this.mandate.employee == '') {
+      this.employeeAvialable = false;
+    }else {
       this.employeeAvialable = true;
       this.getEmployee();
     }
+  }
+
+  deleteEmployee(id: string): void {
+    this.linkageService.employeeFromMandate(this.mandate.employee, this.mandate.id).subscribe(() => {
+      // @ts-ignore
+      this.mandate.employee = null;
+      this.employeeAvialable = false;
+      this.employeeService.deleteEmployee(id).subscribe(() => {
+        this.ngOnInit();
+        // @ts-ignore
+        document.getElementById('refresh'+this.mandate.id).click();
+      });
+    });
+  }
+
+  removeEmployee(): void {
+    // @ts-ignore
+    this.mandate.employee = null;
+    this.employeeAvialable = false;
+    this.ngOnInit()
   }
 
   getEmployee(): void {
@@ -45,18 +68,27 @@ export class MandateComponent implements OnInit {
   }
 
   drop($event: CdkDragDrop<string[]>) {
-    console.log('mandates:')
     // @ts-ignore
     const employeeId = $event.item.element.nativeElement.children.item(0).id;
-    this.linkageService.employeeToMandate(employeeId, this.mandate.id).subscribe( value => {
-      this.refreshEvent.emit("");
-      this.linkageService.refreshBench.next();
+    this.linkageService.employeeToMandate(employeeId, this.mandate.id).subscribe( () => {
+      this.mandate.employee = employeeId;
+      this.employeeAvialable = true;
+      this.ngOnInit();
+      // @ts-ignore
+      document.getElementById('refreshBench').click();
     });
-
   }
 
+  updateEmployee(employee: Employee) {
+    this.employeeService.updateEmployee(employee).subscribe( () => {
+      this.employeeService.getEmployeeById(this.mandate.employee).subscribe( () => {
+        this.ngOnInit();
+      });
+    });
+  }
+
+
   unlink() {
-    console.log('unlinking')
     this.refreshEvent.emit("")
     this.ngOnInit()
   }

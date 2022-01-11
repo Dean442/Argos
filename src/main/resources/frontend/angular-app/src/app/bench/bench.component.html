@@ -1,6 +1,7 @@
 <div class="border-2; bg-gray-100" >
   <div style="height: 75vh" class=" overflow-y-scroll" cdkDropList id="bench" [cdkDropListConnectedTo]="MandateLists" (cdkDropListDropped)="drop($event)" >
-    <div *ngFor="let employee of employees" cdkDrag>
+    <button style="visibility: hidden" class="mat-button button-raised" id="refreshBench" (click)="ngOnInit()"></button>
+    <div *ngFor="let employee of employees" cdkDrag [cdkDragDisabled]="employee.editmode">
       <app-employee
         [id]="employee.id"
         (deleteEmployeeEvent)="deleteEmployee($event)"

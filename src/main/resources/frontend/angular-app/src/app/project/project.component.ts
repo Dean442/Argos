@@ -31,7 +31,6 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMandates();
-    console.log(this.mandates)
     this.mandates != null ? this.mandatesAvailable = true : this.mandatesAvailable = false;
   }
 
@@ -62,17 +61,17 @@ export class ProjectComponent implements OnInit {
       description: mandateDescription,
       happiness:0
     };
-    console.log("new mandate: " + newMandate.description.description)
 
     this.mandateService.addNewMandate(newMandate).subscribe( mandate => {
-      console.log(mandate);
       this.linkageService.mandateToProject(mandate.id, this.project.id);
       this.mandates.push(mandate);
-    })
+    });
 
     this.resetMandateForm();
     this.newMandateToggle = false;
 
+    // @ts-ignore
+    document.getElementById('refreshBench').click();
   }
 
   resetMandateForm(): void {

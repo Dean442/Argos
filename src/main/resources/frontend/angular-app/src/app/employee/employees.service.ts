@@ -19,24 +19,21 @@ export class EmployeesService {
   }
 
   getEmployeeById(id: string): Observable<Employee> {
-    const employee =  this.http.get<Employee>(this.baseUrl + id).pipe(
+    return this.http.get<Employee>(this.baseUrl + id).pipe(
       tap(() => {
         this._refreshEmployees$.next();
       }));
-    return employee;
   }
 
   getBench(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.baseUrl + 'bench');
   }
 
-  addEmployee(employee: Employee): void{
-    this.http.post<Employee>(this.baseUrl + 'newEmployee', employee).pipe(
+  addEmployee(employee: Employee): Observable<Employee>{
+    return this.http.post<Employee>(this.baseUrl + 'newEmployee', employee).pipe(
       tap(() => {
         this._refreshEmployees$.next();
-    })).subscribe( employee => {
-      console.log(employee)
-    });
+    }));
   }
 
   updateEmployee(employee: Employee): Observable<Employee> {
@@ -52,13 +49,7 @@ export class EmployeesService {
 
   deleteEmployee(id: string): Observable<Employee> {
     console.log(id)
-    const toreturn = this.http.delete<Employee>(this.baseUrl + id).pipe(
-      tap(() => {
-        this._refreshEmployees$.next();
-      }));
-    toreturn.subscribe( employee => {
-      console.log(employee)
-    });
-    return toreturn;
+    return this.http.delete<Employee>(this.baseUrl + id);
+
   }
 }

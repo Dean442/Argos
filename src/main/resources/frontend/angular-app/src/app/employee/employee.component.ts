@@ -27,7 +27,6 @@ export class EmployeeComponent implements OnInit {
   @Output() refreshEvent: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnInit(): void {
-    console.log(this.employee)
     this.name.setValue(this.employee.name != undefined ? this.employee.name : '');
     this.firstName.setValue(this.employee.firstName != undefined ? this.employee.firstName : '');
     this.profile.setValue(this.employee.profile != undefined ? this.employee.profile : '');
@@ -39,12 +38,14 @@ export class EmployeeComponent implements OnInit {
   }
 
   deleteEmployee(): void {
-    console.log('todelete:' + this.employee)
     this.deleteEmployeeEvent.emit(this.employee.id);
   }
 
   toggleEdit(): void {
+    this.ngOnInit()
     this.editmode ? this.editmode = false : this.editmode = true;
+    // @ts-ignore
+    this.employee.editmode = true;
   }
 
   saveEdit(): void {
@@ -69,9 +70,8 @@ export class EmployeeComponent implements OnInit {
     // @ts-ignore
     const updatedEmployee: Employee = {id,  name, firstName, profile, businessfield, teamLeader, mandates, happiness, health}
 
-    this.updateEmployeeEvent.emit(updatedEmployee);
-    this.refreshEvent.emit("");
     this.editmode = false;
+    this.updateEmployeeEvent.emit(updatedEmployee);
   }
 
 }

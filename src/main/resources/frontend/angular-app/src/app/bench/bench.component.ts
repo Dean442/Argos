@@ -31,9 +31,6 @@ export class BenchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employeeService.refreshEmployees.subscribe(() => {
-      this.getBench();
-    });
     this.getBench();
     this.mandateService.getAllMandates().subscribe(mandates => {
       mandates.forEach(mandate => {
@@ -44,9 +41,7 @@ export class BenchComponent implements OnInit {
   }
 
   getBench(): void {
-    this.employeeService.getBench().subscribe(bench => {
-      this.employees = [...bench];
-    });
+    this.employeeService.getBench().subscribe(bench => this.employees = bench);
   }
 
   toggleNewEmployeeForm(): void {
@@ -75,9 +70,10 @@ export class BenchComponent implements OnInit {
     // @ts-ignore
     const newEmployee: Employee = {id,  name, firstName, profile, businessfield, teamLeader, mandates, happiness, health}
 
-    this.employeeService.addEmployee(newEmployee);
+    this.employeeService.addEmployee(newEmployee).subscribe(() => {
+      this.ngOnInit();
+    });
     this.employees.push(newEmployee);
-    this.employees = [...this.employees];
 
     //reset form
     this.name.reset('');
@@ -92,27 +88,31 @@ export class BenchComponent implements OnInit {
   }
 
   updateEmployee(employee: Employee) {
-    this.employeeService.updateEmployee(employee)
+    this.employeeService.updateEmployee(employee).subscribe( () => this.ngOnInit());
   }
 
   deleteEmployee(id: string): void {
-    this.employeeService.deleteEmployee(id);
+    this.employeeService.deleteEmployee(id).subscribe(() => {
+      this.ngOnInit();
+    });
   }
 
   drop($event: CdkDragDrop<Employee>) {
-    console.log('bench')
     const mandateId = $event.previousContainer.id;
+
     // @ts-ignore
     const employeeId = $event.item.element.nativeElement.id;
 
     const unlink = this.linkageService.employeeFromMandate(employeeId, mandateId).pipe(
       tap(() => {
         this.ngOnInit();
-        this.linkageService.refresh.next();
+        // @ts-ignore
+        document.getElementById('refresh'+mandateId).click();
       }));
-    unlink.subscribe( value => {
+    unlink.subscribe( () => {
       this.ngOnInit();
-
+      // @ts-ignore
+      document.getElementById('refresh'+mandateId).click();
     });
 
   }

@@ -1,5 +1,6 @@
 <div class="rounded-md bg-gray-400 p-0.25 border">
   <div class="float-right">
+    <button style="visibility: hidden" class="mat-button button-raised" [id]="'refresh'+mandate.id" (click)="removeEmployee()"></button>
     <button class="mat-button button-raised" (click)="deleteMandate()">delete</button>
   </div>
   <div class="mx-2">
@@ -7,7 +8,14 @@
     <p>Start: {{mandate.startDate}}</p>
     <p>End: {{mandate.endDate}}</p>
     <div *ngIf="employeeAvialable" cdkDropList [cdkDropListConnectedTo]="['bench']" [id]="mandate.id">
-      <app-employee (refreshEvent)="ngOnInit()" [employee]="employee" cdkDrag [id]="employee.id" ></app-employee>
+      <app-employee
+        (refreshEvent)="removeEmployee()"
+        [employee]="employee"
+        [id]="employee.id"
+        (deleteEmployeeEvent)="deleteEmployee($event)"
+        (updateEmployeeEvent)="updateEmployee($event)"
+        cdkDrag
+        [cdkDragDisabled]="employee.editmode"></app-employee>
     </div>
     <div *ngIf="!employeeAvialable" class="relative m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2" cdkDropList [id]="'mandate'+mandate.id" [cdkDropListConnectedTo]="['bench']" (cdkDropListDropped)="drop($event)">
       <button class="top-1/4 left-1/2" >Employee</button>

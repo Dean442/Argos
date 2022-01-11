@@ -1,4 +1,5 @@
 export interface Employee {
+  editmode: false;
   id: string;
   name: string;
   firstName: string;
