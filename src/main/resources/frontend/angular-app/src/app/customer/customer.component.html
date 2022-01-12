@@ -6,39 +6,39 @@
         <button class="mat-button button-raised" (click)="deleteCustomer()">delete</button>
       </div>
     </mat-expansion-panel-header>
-      <div *ngFor="let project of projects">
-        <app-project *ngIf="projectAvailable" [project]="project" (deleteProjectEvent)="deleteProject($event)"></app-project>
-      </div>
-      <div *ngIf="!newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
-        <button mat-raised-button class="top-1/4 left-1/2" (click)="toggleNewProjectForm()">add Project</button>
-      </div>
-  </mat-expansion-panel>
+    <div *ngFor="let project of projects">
+      <app-project *ngIf="projectAvailable" [project]="project" (deleteProjectEvent)="deleteProject($event)"></app-project>
+    </div>
+    <div *ngIf="!newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
+      <button mat-raised-button class="top-1/4 left-1/2" (click)="toggleNewProjectForm()">add Project</button>
+    </div>
 
-  <div *ngIf="newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
-    <ng-container>
-      <mat-form-field >
-        <mat-label>Name </mat-label>
-        <textarea type="text" [formControl]="projectName" matInput
-                  cdkTextareaAutosize
-                  #autosize="cdkTextareaAutosize"
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="5">
-        </textarea>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Choose a start date</mat-label>
-        <input matInput [matDatepicker]="picker" [formControl]="startDate">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Choose an end date</mat-label>
-        <input matInput [matDatepicker]="picker1" [formControl]="endDate">
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field>
-      <button mat-button (click)="addNewProject()">save</button>
-      <button mat-button (click)="newProjectToggle = false">cancel</button>
-    </ng-container>
-  </div>
+    <div *ngIf="newProjectToggle" class="m-2 rounded content-center h-20 bottom-0.5 border-dashed border-2">
+      <ng-container>
+        <mat-form-field >
+          <mat-label>Name </mat-label>
+          <textarea type="text" [formControl]="projectName" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5">
+          </textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Choose a start date</mat-label>
+          <input matInput [matDatepicker]="picker" [formControl]="startDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Choose an end date</mat-label>
+          <input matInput [matDatepicker]="picker1" [formControl]="endDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <button mat-button (click)="addNewProject()">save</button>
+        <button mat-button (click)="newProjectToggle = false">cancel</button>
+      </ng-container>
+    </div>
+  </mat-expansion-panel>
 </div>

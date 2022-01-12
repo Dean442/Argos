@@ -39,6 +39,7 @@ export class CustomerComponent implements OnInit {
 
   getProjects(): void {
      this.projectService.getProjectsByIds(this.customer.projects).subscribe(projects => {
+       projects.sort((a,b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : ((b.name.toLowerCase() > a.name.toLowerCase()) ? -1 : 0));
        this.projects = [...projects];
      });
   }

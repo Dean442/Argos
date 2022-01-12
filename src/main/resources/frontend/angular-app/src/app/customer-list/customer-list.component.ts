@@ -32,7 +32,9 @@ export class CustomerListComponent implements OnInit {
 
   getCustomers(): void {
     this.customerService.getAllCustomers().subscribe(customers => {
+      customers.sort((a,b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : ((b.name.toLowerCase() > a.name.toLowerCase()) ? -1 : 0));
       this.customers = [...customers];
+
     });
   }
 

@@ -2,12 +2,12 @@
   <mat-expansion-panel hideToggle class="rounded-md bg-gray-500 p-0.25 border">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <h1>Project name: {{project.name}}</h1>
+        <h1>{{project.name}}</h1>
       </mat-panel-title>
+    </mat-expansion-panel-header>
     <div class="float-right">
       <button class="mat-button button-raised" (click)="deleteProject()">delete</button>
     </div>
-    </mat-expansion-panel-header>
     <div class="mx-2">
       <p>Start date: {{project.startDate}}</p>
       <p>End date: {{project.endDate}}</p>

@@ -1,10 +1,14 @@
-<div class="rounded-md bg-gray-400 p-0.25 border">
+<mat-expansion-panel class="rounded-md bg-gray-400 p-0.25 border">
+
+  <mat-expansion-panel-header>
+    <h1> {{mandate.description.description}}</h1>
+  </mat-expansion-panel-header>
   <div class="float-right">
     <button style="visibility: hidden" class="mat-button button-raised" [id]="'refresh'+mandate.id" (click)="removeEmployee()"></button>
     <button class="mat-button button-raised" (click)="deleteMandate()">delete</button>
   </div>
   <div class="mx-2">
-    <h1> {{mandate.description.description}}</h1>
+
     <p>Start: {{mandate.startDate}}</p>
     <p>End: {{mandate.endDate}}</p>
     <div *ngIf="employeeAvialable" cdkDropList [cdkDropListConnectedTo]="['bench']" [id]="mandate.id">
@@ -21,4 +25,4 @@
       <button class="top-1/4 left-1/2" >Employee</button>
     </div>
   </div>
-</div>
+</mat-expansion-panel>
