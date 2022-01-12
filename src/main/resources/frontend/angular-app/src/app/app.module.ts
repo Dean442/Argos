@@ -23,6 +23,9 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -34,25 +37,28 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MandateComponent,
     CustomerListComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        MatTableModule,
-        MatCardModule,
-        MatGridListModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        ReactiveFormsModule,
-        MatListModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        DragDropModule,
-        MatExpansionModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatTableModule,
+    MatCardModule,
+    MatGridListModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    DragDropModule,
+    MatExpansionModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

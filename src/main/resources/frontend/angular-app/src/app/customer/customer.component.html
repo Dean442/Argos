@@ -1,7 +1,9 @@
 <div class="rounded-md  p-0.25 border">
   <mat-expansion-panel hideToggle class="mx-2">
     <mat-expansion-panel-header>
-      <mat-panel-title class="h-5">{{customer.name}}</mat-panel-title>
+      <mat-panel-title class="h-5">
+        <h1>{{customer.name}}</h1>
+      </mat-panel-title>
       <div class="float-right">
         <button class="mat-button button-raised" (click)="deleteCustomer()">delete</button>
       </div>
