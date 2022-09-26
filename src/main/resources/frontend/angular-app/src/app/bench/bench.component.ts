@@ -4,7 +4,7 @@ import {Employee} from "../employee/employee";
 import {FormControl} from "@angular/forms";
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
 import {LinkageService} from "../../assets/linkage.service";
-import {tap} from "rxjs";
+import {map, Observable, startWith, tap} from "rxjs";
 import {MandateService} from "../mandate/mandate.service";
 
 @Component({
@@ -15,6 +15,8 @@ import {MandateService} from "../mandate/mandate.service";
 })
 export class BenchComponent implements OnInit {
   employees: Employee[] = [];
+  employeesDisplayed: Employee[] = [];
+  filter = new FormControl('');
   name = new FormControl('');
   firstName = new FormControl('');
   profile = new FormControl('');
@@ -32,6 +34,13 @@ export class BenchComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBench();
+    this.filter.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.name;
+        return name ? this._filter(name as string) : this.employees.slice();
+      }),
+    ).subscribe(x => this.employeesDisplayed = x);
     this.mandateService.getAllMandates().subscribe(mandates => {
       mandates.forEach(mandate => {
         if (mandate.employee == null)
@@ -40,8 +49,18 @@ export class BenchComponent implements OnInit {
     } )
   }
 
+  displayFn(employee: Employee): string {
+    return employee && employee.name ? employee.name : '';
+  }
+
+  private _filter(name: string): Employee[] {
+    const filterValue = name.toLowerCase();
+
+    return this.employees.filter(option => option.name.toLowerCase().includes(filterValue));
+  }
   getBench(): void {
     this.employeeService.getBench().subscribe(bench => this.employees = bench);
+    this.employeeService.getBench().subscribe( bench => this.employeesDisplayed = bench);
   }
 
   toggleNewEmployeeForm(): void {
@@ -74,6 +93,7 @@ export class BenchComponent implements OnInit {
       this.ngOnInit();
     });
     this.employees.push(newEmployee);
+    this.employeesDisplayed = this.employees;
 
     //reset form
     this.name.reset('');
@@ -97,6 +117,15 @@ export class BenchComponent implements OnInit {
     });
   }
 
+  filterEmpoyees(name: string): void {
+    this.employeesDisplayed = this.employeesDisplayed.filter((obj) => {
+      return obj.name === name;
+    });
+  }
+  resetFilter(): void {
+    this.employeesDisplayed = this.employees;
+  }
+
   drop($event: CdkDragDrop<Employee>) {
     const mandateId = $event.previousContainer.id;
 
@@ -114,6 +143,5 @@ export class BenchComponent implements OnInit {
       // @ts-ignore
       document.getElementById('refresh'+mandateId).click();
     });
-
   }
 }

@@ -1,7 +1,15 @@
 <div class="border-2; bg-gray-100" >
   <div style="height: 75vh" class=" overflow-y-scroll" cdkDropList id="bench" [cdkDropListConnectedTo]="MandateLists" (cdkDropListDropped)="drop($event)" >
     <button style="visibility: hidden" class="mat-button button-raised" id="refreshBench" (click)="ngOnInit()"></button>
-    <div *ngFor="let employee of employees" cdkDrag [cdkDragDisabled]="employee.editmode">
+    <form class="example-form">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Employee</mat-label>
+        <input type="text" matInput [formControl]="filter" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    <div *ngFor="let employee of employeesDisplayed" cdkDrag [cdkDragDisabled]="employee.editmode">
       <app-employee
         [id]="employee.id"
         (deleteEmployeeEvent)="deleteEmployee($event)"
