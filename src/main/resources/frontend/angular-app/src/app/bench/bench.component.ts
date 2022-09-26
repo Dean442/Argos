@@ -4,7 +4,7 @@ import {Employee} from "../employee/employee";
 import {FormControl} from "@angular/forms";
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
 import {LinkageService} from "../../assets/linkage.service";
-import {map, Observable, startWith, tap} from "rxjs";
+import {map, startWith, tap} from "rxjs";
 import {MandateService} from "../mandate/mandate.service";
 
 @Component({
@@ -56,7 +56,7 @@ export class BenchComponent implements OnInit {
   private _filter(name: string): Employee[] {
     const filterValue = name.toLowerCase();
 
-    return this.employees.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.employees.filter(option => option.name.toLowerCase().includes(filterValue) || option.firstName.toLowerCase().includes(filterValue));
   }
   getBench(): void {
     this.employeeService.getBench().subscribe(bench => this.employees = bench);
