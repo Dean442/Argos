@@ -117,15 +117,6 @@ export class BenchComponent implements OnInit {
     });
   }
 
-  filterEmpoyees(name: string): void {
-    this.employeesDisplayed = this.employeesDisplayed.filter((obj) => {
-      return obj.name === name;
-    });
-  }
-  resetFilter(): void {
-    this.employeesDisplayed = this.employees;
-  }
-
   drop($event: CdkDragDrop<Employee>) {
     const mandateId = $event.previousContainer.id;
 
